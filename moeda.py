@@ -1,28 +1,54 @@
 import customtkinter
 from funcao import converter
+
  
 #FUNÇÕES
 def geral():
+    def erro():
+        janelaErro.destroy()
+
     flag = True
     while(flag):
-        tempV = entrada1.get() # Pegar o valor do ENTRY
-        tempV = float(tempV) # String to float
-        tempM = optionmenu.get() # Pegar valor da Opção de moeda selecionada
-        # Comparar a moeda selecionada e atribuir qual o tipo de moeda usado pela API 
-        if(tempM == "Dolar"):
-            moeda = "USDBRL"
-            flag = False
-        elif(tempM == "Euro"):
-            moeda = "EURBRL"
-            flag = False
-        elif(tempM == "Bitcoin"):
-            moeda = "BTCBRL"
-            flag = False
+        try:
+            tempV = entrada1.get() # Pegar o valor do ENTRY
+            tempV = float(tempV) # String to float
+            tempM = optionmenu.get() # Pegar valor da Opção de moeda selecionada.
+            # Comparar a moeda selecionada e atribuir qual o tipo de moeda usado pela API 
+            if(tempM == "Dolar"):
+                moeda = "USDBRL"
+                flag = False
+            elif(tempM == "Euro"):
+                moeda = "EURBRL"
+                flag = False
+            elif(tempM == "Bitcoin"):
+                moeda = "BTCBRL"
+                flag = False
+            result = converter(tempV,moeda) #chamar a função 
+            saida1.configure(text='R$ {:.2f}'.format(result)) # Colocar a informação no Label
+        except ValueError as Erro:
+            #print(Erro)
+            print("Digite apenas números")
+            customtkinter.set_appearance_mode("dark")
+            customtkinter.set_default_color_theme("green")
+            
+            janelaErro = customtkinter.CTk()
+            janelaErro.geometry("300x100")
+            janelaErro.title("Erro")
+            
+            titulo = customtkinter.CTkLabel(janelaErro,text=("Digite apenas números").upper(),font=("Arial",20))
+            titulo.grid(row=1, column=2,padx=10,pady=10)
+            
+            botaoErro = customtkinter.CTkButton(janelaErro, text="ENTENDI", command=erro)
+            botaoErro.grid(row=2, column=2,padx=10,pady=10)
+            #janelaErro.focus_displayof()
+            janelaErro.mainloop()
+            
+        break
         
-        result = converter(tempV,moeda) #chamar a função 
-        saida1.configure(text='R$ {:.2f}'.format(result)) # Colocar a informação no Label
-    
-    
+       
+        
+        
+        
 # Tela principal
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -40,7 +66,7 @@ texto1.grid(row=1, column=0,padx=10,pady=10)
 texto2 = customtkinter.CTkLabel(janela,text="valor da conversão",font=("Arial",15))
 texto2.grid(row=1, column=2,padx=10,pady=10)
 
-saida1 = customtkinter.CTkLabel(janela,text="",fg_color='green',bg_color='green')
+saida1 = customtkinter.CTkLabel(janela,text="                       ",fg_color='green',bg_color='green')
 saida1.grid(row=2, column=2,padx=10,pady=10)
 
 texto3 = customtkinter.CTkLabel(janela,text="Unidade",font=("Arial",15))
@@ -55,7 +81,7 @@ try:# Tratamento e exceção
     entrada1.grid(row=2, column=0,padx=10,pady=10)
     
 except ValueError as Erro:
-    print(Erro)
+    #print(Erro)
     print("Digite apenas números")
 
 optionmenu = customtkinter.CTkOptionMenu(janela, values=["Dolar", "Euro","Bitcoin"])
