@@ -10,7 +10,9 @@ def geral():
     flag = True
     while(flag):
         try:
-            tempV = entrada1.get() # Pegar o valor do ENTRY
+            #for i in entrada1.get():
+            #    if i == ',':
+            tempV = entrada1.get().replace(",",".") # Pegar o valor do ENTRY
             tempV = float(tempV) # String to float
             tempM = optionmenu.get() # Pegar valor da Opção de moeda selecionada.
             # Comparar a moeda selecionada e atribuir qual o tipo de moeda usado pela API 
@@ -27,7 +29,7 @@ def geral():
             saida1.configure(text='R$ {:.2f}'.format(result)) # Colocar a informação no Label
         except ValueError as Erro:
             #print(Erro)
-            print("Digite apenas números")
+            #print("Digite apenas números")
             customtkinter.set_appearance_mode("dark")
             customtkinter.set_default_color_theme("green")
             
@@ -35,7 +37,7 @@ def geral():
             janelaErro.geometry("300x100")
             janelaErro.title("Erro")
             
-            titulo = customtkinter.CTkLabel(janelaErro,text=("Digite apenas números").upper(),font=("Arial",20))
+            titulo = customtkinter.CTkLabel(janelaErro,text=("Digite somente números").upper(),font=("Arial",20))
             titulo.grid(row=1, column=2,padx=10,pady=10)
             
             botaoErro = customtkinter.CTkButton(janelaErro, text="ENTENDI", command=erro)
